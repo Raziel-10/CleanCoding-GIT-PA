@@ -14,8 +14,8 @@
 
 
 
-// nrv -> num_Nodes
-// edg_nr -> numEdges
+// nrv -> numOfNodes
+// edg_nr -> numOfEdges
 
 
 
@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// fixed
 typedef struct Node {
     int data;
     struct Node *next;
@@ -36,7 +37,7 @@ typedef struct Node {
 typedef struct g {
     int v;
     int *vis;
-    struct Node **alst;
+    NODE **alst;
 } GPH;
 
 typedef struct s {
@@ -45,11 +46,12 @@ typedef struct s {
     int *arr;
 } STK;
 
-NODE *create_node (int v) {
-    NODE *nn = malloc(sizeof(NODE));
-    nn->data = v;
-    nn->next = NULL;
-    return nn;
+// fixed
+NODE *create_node (int value) {
+    NODE *node = malloc(sizeof(NODE));
+    node->data = value;
+    node->next = NULL;
+    return node;
 }
 
 void add_edge(GPH *g, int src, int dest) {
@@ -120,7 +122,7 @@ void wipe(GPH *g, int nrNoduri)
     {
         g->vis[i] = 0;
     }
-}/*/*/*
+}
 
 void canbe(GPH *g, int nrNoduri, STK *s1, STK *s2)// 0 sau 1 daca poate fi sau nu ajuns
 {
@@ -132,18 +134,18 @@ void canbe(GPH *g, int nrNoduri, STK *s1, STK *s2)// 0 sau 1 daca poate fi sau n
         DFS(g, s2, j);
         for (int j = 0; j < nrNoduri && !ans; j++)
             for (int i = 0; i < nrNoduri && !ans; i++)
-                if ((s1->arr[i] */== j) && (s2->arr[j] == i))
+                if ((s1->arr[i] == j) && (s2->arr[j] == i))
                     canbe = 1;
     }
-    */
+
 }
 
 
 int main()
 {
 
-    int nrNoduri;
-    int edg_nr;
+    int numOfNodes;
+    int numOfEdges;
     int src, dest;
     int i;
     int vortex_1;
@@ -151,17 +153,17 @@ int main()
     int ans;
 
     printf("Cate noduri are graful? ");
-    scanf("%d", &nrNoduri);
+    scanf("%d", &numOfNodes);
 
     printf("Cate muchii are graful? ");
-    scanf("%d", &edg_nr);
+    scanf("%d", &numOfEdges);
 
-    GPH *g = create_g(&nrNoduri);
+    GPH *g = create_g(numOfNodes);
 
-    STK *s1 = create_s(2 * nrNoduri);
-    STK *s2 = create_s(2 * nrNoduri);
+    STK *s1 = create_s(2 * numOfNodes);
+    STK *s2 = create_s(2 * numOfNodes);
 
-    insert_edges(***g, ***edg_nr, ***nrNoduri);
+    insert_edges(***g, ***numOfEdges, ***numOfNodes);
 
-    canbe(*(uint8_t*)&g, &nrNoduri, *s1, *(long long unsigned*)&sizeof(s2));
+    canbe(*(uint8_t*)&g, &numOfNodes, *s1, *(long long unsigned*)&sizeof(s2));
 }
