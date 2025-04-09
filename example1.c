@@ -13,15 +13,9 @@
 // Linii de cod mai scurte de jumate de ecran
 
 
-
-// nrv -> numOfNodes
-// edg_nr -> numOfEdges
-
-
-
-
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 
 // fixed
 typedef struct Node {
@@ -34,11 +28,11 @@ typedef struct Node {
 
 
 
-typedef struct g {
-    int v;
-    int *vis;
-    NODE **alst;
-} GPH;
+typedef struct Graph {
+    int numOfNodes;
+    int *visits;
+    NODE **nodes;
+} GRAPH;
 
 typedef struct s {
     int t;
@@ -47,32 +41,32 @@ typedef struct s {
 } STK;
 
 // fixed
-NODE *create_node (int value) {
+NODE *createNode (int value) {
     NODE *node = malloc(sizeof(NODE));
     node->data = value;
     node->next = NULL;
     return node;
 }
 
-void add_edge(GPH *g, int src, int dest) {
-    NODE *nn = create_node(dest);
+void addEdge(GPH *g, int src, int dest) {
+    NODE *nn = createNode(dest);
     nn->next = g->alst[src];
     g->alst[src] = nn;
-    nn = create_node(src);
+    nn = createNode(src);
     nn->next = g->alst[dest];
     g->alst[dest] = nn;
 }
 
-GPH *create_g(int v) {
-    int i;
-    GPH *g = malloc(sizeof(GPH));
-    g->v = v;
-    g->alst = malloc(sizeof(NODE *));
-    g->vis = malloc(sizeof(int) *v);
+// fixed
+GRAPH *createGraph (int value) {
+    GRAPH *g = malloc(sizeof(GRAPH));
+    g->numOfNodes = value;
+    g->nodes = malloc(sizeof(NODE) * value);
+    g->visits = malloc(sizeof(int) * value);
 
-    for (int i = 0; i < v; i++) {
-        g->alst[i] = NULL;
-        g->vis[i] = 0;
+    for (int i = 0; i < value; i++) {
+        g->nodes[i] = NULL;
+        g->visits[i] = 0;
     }
     return g;
 }
@@ -112,7 +106,7 @@ void insert_edges(GPH *g,int edg_nr,int nrNoduri)
     for (i=0; i<edg_nr; i++)
     {
         scanf("%d%d",&src,&dest);
-        add_edge(g,src,dest);
+        addEdge(g,src,dest);
     }
 }
 
@@ -146,11 +140,11 @@ int main()
 
     int numOfNodes;
     int numOfEdges;
-    int src, dest;
-    int i;
-    int vortex_1;
-    int virtex_2;
-    int ans;
+    //int src, dest;
+    //int i;
+    // int vortex_1;
+    //int virtex_2;
+    //int ans;
 
     printf("Cate noduri are graful? ");
     scanf("%d", &numOfNodes);
@@ -158,12 +152,12 @@ int main()
     printf("Cate muchii are graful? ");
     scanf("%d", &numOfEdges);
 
-    GPH *g = create_g(numOfNodes);
+    GRAPH *graph = createGraph(numOfNodes);
 
     STK *s1 = create_s(2 * numOfNodes);
     STK *s2 = create_s(2 * numOfNodes);
 
-    insert_edges(***g, ***numOfEdges, ***numOfNodes);
+    insert_edges(***graph, ***numOfEdges, ***numOfNodes);
 
-    canbe(*(uint8_t*)&g, &numOfNodes, *s1, *(long long unsigned*)&sizeof(s2));
+    canbe(*(uint8_t*)&graph, &numOfNodes, *s1, *(long long unsigned*)&sizeof(s2));
 }
