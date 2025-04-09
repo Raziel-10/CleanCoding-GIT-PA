@@ -3,7 +3,7 @@
 // Fiecare scope cu indentarea lui
 // Spatii inainte si dupa operatori
 // Impartirea codului pe paragrafe
-// Indentare Allman
+// Indentare Allman (schimbare de planuri, folosim K&R)
 // Functii si variable cu denumiri sugestive
 // Variabile numite dupa substantive, functii dupa verbe
 // Denumire functii si variabile cu camelCase
@@ -14,7 +14,7 @@
 
 
 
-// nrv -> num_Nodes
+// nrv -> numNodes
 // edg_nr -> numEdges
 
 
@@ -34,9 +34,9 @@ typedef struct Node {
 
 
 typedef struct g {
-    int v;
+    int numOfNodes;
     int *vis;
-    struct Node **alst;
+    NODE **alst;
 } GPH;
 
 typedef struct s {
@@ -61,14 +61,13 @@ void add_edge(GPH *g, int src, int dest) {
     g->alst[dest] = nn;
 }
 
-GPH *create_g(int v) {
-    int i;
-    GPH *g = malloc(sizeof(GPH));
-    g->v = v;
-    g->alst = malloc(sizeof(NODE *));
-    g->vis = malloc(sizeof(int) *v);
+GPH create_g(int *numOfNodes) {
+    GPH g = malloc(sizeof(GPH));
+    g->v = numOfNodes;
+    g->alst = malloc(sizeof(NODE));
+    g->vis = malloc(sizeof(int) * numOfNodes);
 
-    for (int i = 0; i < v; i++) {
+    for(int i = 0; i < numOfNodes; i++) {
         g->alst[i] = NULL;
         g->vis[i] = 0;
     }
@@ -103,47 +102,44 @@ void DFS(GPH *g, STK *s, int v_nr) {
     }
 }
 
-void insert_edges(GPH *g,int edg_nr,int nrNoduri)
+void insert_edges(GPH *g,int numEdges,int numNodes)
 {
     int src,dest,i;
-    printf("adauga %d munchii (de la 1 la %d)\n",edg_nr,nrNoduri);
-    for (i=0; i<edg_nr; i++)
+    printf("adauga %d munchii (de la 1 la %d)\n",numEdges,numNodes);
+    for (i=0; i<numEdges; i++)
     {
         scanf("%d%d",&src,&dest);
         add_edge(g,src,dest);
     }
 }
 
-void wipe(GPH *g, int nrNoduri)
+void wipe(GPH *g, int numNodes)
 {
-    for (int i=0; i<nrNoduri; i++)
+    for (int i=0; i<numNodes; i++)
     {
         g->vis[i] = 0;
     }
-}/*/*/*
+}
 
-void canbe(GPH *g, int nrNoduri, STK *s1, STK *s2)// 0 sau 1 daca poate fi sau nu ajuns
-{
+void canbe(GPH *g, int numNodes, STK *s1, STK *s2) {// 0 sau 1 daca poate fi sau nu ajuns
     int *canbe = calloc(5, sizeof(int));
-    for (int i = 0; i < nrNoduri; i++) // aici i tine loc de numar adica de restaurant{for (int j = 0; j < 5; j++)
+    for (int i = 0; i < numNodes; i++) // aici i tine loc de numar adica de restaurant{for (int j = 0; j < 5; j++)
     {
         DFS(g, s1, i);
-        wipe(g, nrNoduri);
+        wipe(g, numNodes);
         DFS(g, s2, j);
-        for (int j = 0; j < nrNoduri && !ans; j++)
-            for (int i = 0; i < nrNoduri && !ans; i++)
+        for (int j = 0; j < numNodes && !ans; j++)
+            for (int i = 0; i < numNodes && !ans; i++)
                 if ((s1->arr[i] */== j) && (s2->arr[j] == i))
                     canbe = 1;
     }
-    */
+
 }
 
+int main() {
 
-int main()
-{
-
-    int nrNoduri;
-    int edg_nr;
+    int numNodes;
+    int numEdges;
     int src, dest;
     int i;
     int vortex_1;
@@ -151,17 +147,18 @@ int main()
     int ans;
 
     printf("Cate noduri are graful? ");
-    scanf("%d", &nrNoduri);
+    scanf("%d", &numNodes);
 
     printf("Cate muchii are graful? ");
-    scanf("%d", &edg_nr);
+    scanf("%d", &numEdges);
 
-    GPH *g = create_g(&nrNoduri);
+    GPH *g = create_g(&numNodes);
 
-    STK *s1 = create_s(2 * nrNoduri);
-    STK *s2 = create_s(2 * nrNoduri);
+    STK *s1 = create_s(2 * numNodes);
+    STK *s2 = create_s(2 * numNodes);
 
-    insert_edges(***g, ***edg_nr, ***nrNoduri);
+    insert_edges(***g, ***numEdges, ***numNodes);
 
-    canbe(*(uint8_t*)&g, &nrNoduri, *s1, *(long long unsigned*)&sizeof(s2));
+    canbe(*(uint8_t*)&g, &numNodes, *s1, *(long long unsigned*)&sizeof(s2));
+    return 0;
 }
