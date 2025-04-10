@@ -16,8 +16,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-// fixed
 typedef struct Node {
     int data;
     struct Node *next;
@@ -26,13 +24,14 @@ typedef struct Node {
 // pentru simplitate, folosim int uri pt a numi restaurantele/locatiile
 // ex: 1 - restaurantul 1 si tot asa
 
-
-
 typedef struct Graph {
-    int numOfNodes;
-    int *visits;
-    NODE **nodes;
+    int vertices;
+    int *visited;
+    NODE **adjacencyLists;
 } GRAPH;
+
+
+////////////////////////////////////////////////// HERE //////////////////////////////////////////////////
 
 typedef struct s {
     int t;
@@ -40,35 +39,37 @@ typedef struct s {
     int *arr;
 } STK;
 
-// fixed
 NODE *createNode (int value) {
-    NODE *node = malloc(sizeof(NODE));
-    node->data = value;
-    node->next = NULL;
-    return node;
+    NODE *newNode = malloc(sizeof(NODE));
+    
+    newNode->data = value;
+    newNode->next = NULL;
+
+    return newNode;
 }
 
-void addEdge(GPH *g, int src, int dest) {
-    NODE *nn = createNode(dest);
-    nn->next = g->alst[src];
-    g->alst[src] = nn;
-    nn = createNode(src);
-    nn->next = g->alst[dest];
-    g->alst[dest] = nn;
+void addEdge (GRAPH *graph, int src, int dest) {
+    NODE *newNode = createNode(dest);
+    newNode->next = graph->adjacencyLists[src];
+    graph->adjacencyLists[src] = newNode;
+    newNode = createNode(src);
+    newNode->next = graph->adjacencyLists[dest];
+    graph->adjacencyLists[dest] = newNode;
 }
 
-// fixed
-GRAPH *createGraph (int value) {
-    GRAPH *g = malloc(sizeof(GRAPH));
-    g->numOfNodes = value;
-    g->nodes = malloc(sizeof(NODE) * value);
-    g->visits = malloc(sizeof(int) * value);
+GRAPH *createGraph (int vertices) {
+    GRAPH *graph = malloc(sizeof(GRAPH));
+    
+    graph->vertices = vertices;
+    graph->adjacencyLists = malloc(sizeof(NODE *) * vertices);
+    graph->visited = malloc(sizeof(int) * vertices);
 
-    for (int i = 0; i < value; i++) {
-        g->nodes[i] = NULL;
-        g->visits[i] = 0;
+    for (int i = 0; i < vertices; i++) {
+        graph->adjacencyLists[i] = NULL;
+        graph->visited[i] = 0;
     }
-    return g;
+
+    return graph;
 }
 
 STK *create_s(int scap) {
@@ -99,22 +100,18 @@ void DFS(GPH *g, STK *s, int v_nr) {
     }
 }
 
-void insert_edges(GPH *g,int edg_nr,int nrNoduri)
-{
-    int src,dest,i;
-    printf("adauga %d munchii (de la 1 la %d)\n",edg_nr,nrNoduri);
-    for (i=0; i<edg_nr; i++)
-    {
-        scanf("%d%d",&src,&dest);
-        addEdge(g,src,dest);
+void insertEdges (GRAPH *graph, int numOfVertices, int numOfEdges) {
+    int src, dest;
+    printf("Adauga %d muchii (de la 1 la %d)\n", numOfEdges, numOfVertices);
+    for (int i = 0; i < numOfEdges; i++) {
+        scanf("%d%d", &src, &dest);
+        addEdge(graph, src, dest);
     }
 }
 
-void wipe(GPH *g, int nrNoduri)
-{
-    for (int i=0; i<nrNoduri; i++)
-    {
-        g->vis[i] = 0;
+void wipeVisitedList (GRAPH *graph, int numOfVertices) {
+    for (int i = 0; i < numOfVertices; i++) {
+        graph->visited[i] = 0;
     }
 }
 
