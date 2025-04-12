@@ -21,23 +21,17 @@ typedef struct Node {
     struct Node *next;
 } NODE;
 
-// pentru simplitate, folosim int uri pt a numi restaurantele/locatiile
-// ex: 1 - restaurantul 1 si tot asa
-
 typedef struct Graph {
     int vertices;
     int *visited;
     NODE **adjacencyLists;
 } GRAPH;
 
-
-////////////////////////////////////////////////// HERE //////////////////////////////////////////////////
-
-typedef struct s {
+typedef struct Stack {
     int t;
-    int scap;
-    int *arr;
-} STK;
+    int capacity;
+    int *array;
+} STACK;
 
 NODE *createNode (int value) {
     NODE *newNode = malloc(sizeof(NODE));
@@ -46,15 +40,6 @@ NODE *createNode (int value) {
     newNode->next = NULL;
 
     return newNode;
-}
-
-void addEdge (GRAPH *graph, int src, int dest) {
-    NODE *newNode = createNode(dest);
-    newNode->next = graph->adjacencyLists[src];
-    graph->adjacencyLists[src] = newNode;
-    newNode = createNode(src);
-    newNode->next = graph->adjacencyLists[dest];
-    graph->adjacencyLists[dest] = newNode;
 }
 
 GRAPH *createGraph (int vertices) {
@@ -71,6 +56,31 @@ GRAPH *createGraph (int vertices) {
 
     return graph;
 }
+
+void addEdge (GRAPH *graph, int src, int dest) {
+    NODE *newNode = createNode(dest);
+    
+    newNode->next = graph->adjacencyLists[src];
+    graph->adjacencyLists[src] = newNode;
+
+    newNode = createNode(src);
+    
+    newNode->next = graph->adjacencyLists[dest];
+    graph->adjacencyLists[dest] = newNode;
+}
+
+////////////////////////////////////////////////// HERE //////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
 
 STK *create_s(int scap) {
     STK *s = malloc(sizeof(STK));
